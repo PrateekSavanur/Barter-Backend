@@ -3,25 +3,23 @@ const { createTransport } = require("nodemailer");
 const sendEmail = async (options) => {
   // Create a transporter
   const transporter = createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
+    service: "gmail",
     auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    secure: false,
-    tls: {
-      ciphers: "SSLv3",
+      type: "OAuth2",
+      user: process.env.MAIL_USERNAME,
+      pass: process.env.MAIL_PASSWORD,
+      clientId: process.env.OAUTH_CLIENTID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
     },
   });
   // Define email options
 
   const mailOptions = {
-    from: "Prateek Savanur <mymail@gmail.com>",
+    from: "prateek7802@gmail.com",
     to: options.email,
     subject: options.subject,
     text: options.message,
-    // html:
   };
 
   // Send email

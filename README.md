@@ -76,6 +76,8 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 
 - **POST** `/api/v1/users/signup`: User sign up (register).
 - **POST** `/api/v1/users/login`: User login (JWT-based).
+- **POST** `/api/v1/users/forgotPassword`: Sends email to reset password using nodemailer.
+- **POST** `/api/v1/users/resetPassword/:token`: Link sent to user via email.
 
 ### 2. **Items**
 
