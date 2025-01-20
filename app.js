@@ -19,6 +19,9 @@ if (!process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Trust the proxy for accurate IP identification
+app.set("trust proxy", true);
+
 // Set security http headers
 app.use(helmet());
 
