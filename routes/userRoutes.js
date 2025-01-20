@@ -12,6 +12,9 @@ router.patch("/resetPassword/:token", authController.resetPassword);
 // Protect
 router.use(authController.protect);
 
-router.get("/test", userController.test);
+router.patch("/updateMyPassword", authController.updatePassword);
+router.get("/me", userController.getMe, userController.getUser);
+router.delete("/deleteMe", userController.deleteMe);
+router.patch("/updateMe", userController.updateMe);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
@@ -102,7 +101,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest("hex");
 
-  console.log({ resetToken });
+  if (process.env.NODE_ENV === "development") console.log(resetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
