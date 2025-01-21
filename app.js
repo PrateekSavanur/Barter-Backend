@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -14,13 +15,19 @@ const transactionRouter = require("./routes/transactionRoutes");
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3001",
+  })
+);
+
 // Development logging
 if (!process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 // Trust the proxy for accurate IP identification
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 
 // Set security http headers
 app.use(helmet());
