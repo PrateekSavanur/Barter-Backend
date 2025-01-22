@@ -15,11 +15,22 @@ const transactionRouter = require("./routes/transactionRoutes");
 
 const app = express();
 
+const allowedOrigins = [
+  "https://barter-backend-five.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:3001",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    allowedHeaders: "Authorization,Content-Type",
   })
 );
 
