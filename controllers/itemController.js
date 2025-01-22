@@ -3,17 +3,22 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 const getAllItems = catchAsync(async (req, res) => {
-  const loggedInUserId = req.user._id;
+  const { ownerId } = req.query;
   let items;
-  if (loggedInUserId) {
-    items = await Item.find({ owner: { $ne: loggedInUserId } }).populate(
+
+  if (ownerId) {
+    items = await Item.find({ owner: ownerId }).populate(
       "owner",
       "name email location"
     );
   } else {
     items = await Item.find().populate("owner", "name email location");
   }
-  res.status(200).json(items);
+
+  res.status(200).json({
+    status: "success",
+    items,
+  });
 });
 
 const getItemById = catchAsync(async (req, res, next) => {

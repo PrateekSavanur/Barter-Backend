@@ -22,6 +22,19 @@ const getTransactionById = catchAsync(async (req, res, next) => {
   res.status(200).json(transaction);
 });
 
+const getTransactionsByUser = catchAsync(async (req, res, next) => {
+  const { owner } = req.query;
+
+  const transactions = await Transaction.find({
+    $or: [{ initiator: owner }, { recipient: owner }],
+  }).populate("initiator recipient initiatorItem recipientItem");
+  if (!transactions) {
+    return next(new AppError("Transactions not found", 404));
+  }
+
+  res.status(200).json(transactions);
+});
+
 // Create a new transaction
 const createTransaction = catchAsync(async (req, res, next) => {
   const {
@@ -41,6 +54,17 @@ const createTransaction = catchAsync(async (req, res, next) => {
         400
       )
     );
+  }
+
+  const existingTransaction = await Transaction.findOne({
+    initiator: req.body.initiator,
+    recipient: req.body.recipient,
+    initiatorItem: req.body.initiatorItem,
+    recipientItem: req.body.recipientItem,
+  });
+
+  if (existingTransaction) {
+    return res.status(400).json({ message: "Duplicate transaction detected!" });
   }
 
   // Create the transaction
@@ -125,8 +149,9 @@ const deleteTransaction = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
-  getTransactionById,
+  getTransactionsByUser,
   createTransaction,
   updateTransactionStatus,
   deleteTransaction,
+  getTransactionById,
 };

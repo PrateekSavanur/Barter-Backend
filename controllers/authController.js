@@ -62,13 +62,15 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  // Get the token
+  // Get token and check if it exists
+
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+
+  if (req.headers.cookie) {
+    token = req.headers.cookie
+      .split("; ")
+      .find((cookie) => cookie.startsWith("authToken=" || "jwt="))
+      ?.split("=")[1];
   }
 
   if (!token) {
