@@ -17,7 +17,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://barter-backend-five.vercel.app", "http://localhost:3000"],
+    origin: [
+      "https://barter-backend-five.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:3001",
+    ],
     credentials: true,
     allowedHeaders: "Authorization,Content-Type",
   })
